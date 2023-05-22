@@ -21,14 +21,23 @@ public class Customer {
 
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    public Customer(){}
+
+    public Customer(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private List<CreditCard> creditCards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "orderId")
     private List<Order> orders = new ArrayList<>();
 }
