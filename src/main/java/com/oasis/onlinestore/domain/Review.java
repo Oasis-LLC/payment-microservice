@@ -19,7 +19,6 @@ public class Review {
     private String title;
     private String date;
     private String description;
-
     private Customer buyer;
 
 

@@ -24,9 +24,9 @@ public class Customer {
 
     private String email;
 
-    private List<Object> addresses = new ArrayList<>();
+    private List<Address> addresses = new ArrayList<>();
 
-    private List<Object> creditCards = new ArrayList<>();
+    private List<CreditCard> creditCards = new ArrayList<>();
 
-    private List<Object> orders = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 }

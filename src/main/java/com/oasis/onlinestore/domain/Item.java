@@ -24,7 +24,7 @@ public class Item {
 
     private int quantity;
 
-    private List<Object> reviews = new ArrayList<>();
+    private List<Review> reviews = new ArrayList<>();
 
     private List<Item> items = new ArrayList<>(); // composite
 
