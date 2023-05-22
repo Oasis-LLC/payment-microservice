@@ -1,14 +1,11 @@
 package com.oasis.onlinestore;
 
 import com.oasis.onlinestore.domain.*;
-import com.oasis.onlinestore.repository.OrderRepo;
-import org.aspectj.weaver.ast.Or;
+import com.oasis.onlinestore.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,7 @@ import java.util.List;
 @SpringBootApplication
 public class OnlineStoreApplication implements CommandLineRunner {
 	@Autowired
-	OrderRepo orderRepo;
+	OrderRepository orderRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineStoreApplication.class, args);
