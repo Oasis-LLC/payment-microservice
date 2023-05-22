@@ -13,7 +13,7 @@ public class LineItem {
     private UUID id;
     private int quantity;
     private double discount;
-    private Object item;
+    private Item item;
 
     public LineItem(){
 
