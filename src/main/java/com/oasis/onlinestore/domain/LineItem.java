@@ -13,6 +13,9 @@ public class LineItem {
     private UUID id;
     private int quantity;
     private double discount;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "itemId")
     private Item item;
 
     public LineItem(){

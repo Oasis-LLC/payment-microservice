@@ -1,9 +1,6 @@
 package com.oasis.onlinestore.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -24,9 +21,14 @@ public class Customer {
 
     private String email;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerId")
     private List<Address> addresses = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerId")
     private List<CreditCard> creditCards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
 }

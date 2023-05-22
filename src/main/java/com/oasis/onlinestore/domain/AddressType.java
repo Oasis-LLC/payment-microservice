@@ -9,13 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class AddressType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String type;
+public enum AddressType {
+    BILLING, SHIPPING
 }
+
