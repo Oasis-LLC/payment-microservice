@@ -15,7 +15,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -23,7 +23,7 @@ public class Order {
     @JoinColumn(name = "addressId")
     private Address shippingAddress;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "orderId")
     private List<LineItem> lineItems = new ArrayList<>();
     @Enumerated

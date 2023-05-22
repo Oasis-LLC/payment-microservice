@@ -1,9 +1,6 @@
 package com.oasis.onlinestore.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +15,15 @@ public class Address {
     private String city;
     private String street;
     private String state;
+    @Enumerated
     private AddressType addressType;
+
+    public Address(){}
+
+    public Address(String city, String street, String state, AddressType addressType) {
+        this.city = city;
+        this.street = street;
+        this.state = state;
+        this.addressType = addressType;
+    }
 }
