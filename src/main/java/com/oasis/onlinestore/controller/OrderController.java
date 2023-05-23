@@ -68,10 +68,10 @@ public class OrderController {
     }
 
     @PostMapping("/cancel")
-    public ResponseEntity<?> cancelOrder(@PathVariable String orderId) {
+    public ResponseEntity cancelOrder(@PathVariable String orderId) {
         UUID uuid = UUID.fromString(orderId);
-        orderService.cancelOrder(uuid);
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        orderService.cancelOrder(uuid );
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }
 

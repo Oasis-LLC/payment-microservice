@@ -153,13 +153,23 @@ public class OrderService {
         return Optional.of(newOrder);
     }
 
-   public void cancelOrder(UUID orderId) {
+    public void cancelOrder(UUID orderId) {
         Optional<Order> order = orderRepository.findById(orderId);
-        if (order.orElseThrow().getStatus()==Status.PLACED){
-            System.out.println("Order is already placed");
-           // throw new RuntimeException("Order is already placed");
-        }
-        order.orElseThrow().setStatus(Status.CANCELLED);
+        if (order.isPresent()) {
+            Order existingOrder = order.get();
+            if (existingOrder.getStatus() == Status.PLACED) {
+                System.out.println("Cannot cancel the order as it is already placed.");
+            } else if (existingOrder.getStatus() == Status.NEW) {
+                existingOrder.setStatus(Status.CANCELLED);
+                //orderRepository.save(existingOrder);
+                System.out.println("Order has been successfully cancelled.");
+            }
+        } else {
+            System.out.println("Order not found with ID: " + orderId);
         }
     }
+}
+
+
+
 
