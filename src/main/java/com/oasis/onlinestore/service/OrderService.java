@@ -122,4 +122,13 @@ public class OrderService {
         return Optional.of(newOrder);
     }
 
-}
+   public void cancelOrder(UUID orderId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        if (order.orElseThrow().getStatus()==Status.PLACED){
+            System.out.println("Order is already placed");
+           // throw new RuntimeException("Order is already placed");
+        }
+        order.orElseThrow().setStatus(Status.CANCELLED);
+        }
+    }
+

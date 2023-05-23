@@ -3,6 +3,7 @@ package com.oasis.onlinestore.controller;
 import com.oasis.onlinestore.domain.Item;
 import com.oasis.onlinestore.domain.LineItem;
 import com.oasis.onlinestore.domain.Order;
+import com.oasis.onlinestore.domain.Status;
 import com.oasis.onlinestore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,12 @@ public class OrderController {
     OrderService orderService;
 
     @GetMapping
-    public List<Order> findAll(){
+    public List<Order> findAll() {
         return orderService.getAllOrders();
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<?> findAllById(@PathVariable String orderId){
+    public ResponseEntity<?> findAllById(@PathVariable String orderId) {
         UUID uuid = UUID.fromString(orderId);
         Optional<Order> order = orderService.getOrderById(uuid);
         if (order.isPresent()) {
@@ -73,4 +74,14 @@ public class OrderController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/cancel")
+    public ResponseEntity<?> cancelOrder(@PathVariable String orderId) {
+        UUID uuid = UUID.fromString(orderId);
+        orderService.cancelOrder(uuid);
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
 }
+
+
+
+
