@@ -1,13 +1,12 @@
 package com.oasis.onlinestore.service;
 
+import com.oasis.onlinestore.contract.SimpleResponse;
 import com.oasis.onlinestore.domain.*;
 import com.oasis.onlinestore.repository.OrderRepository;
 import com.oasis.onlinestore.repository.UserRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,8 +18,6 @@ public class OrderService {
 
     @Autowired
     UserRepository userRepository;
-
-
 
     @Autowired
     ItemService itemService;
@@ -38,49 +35,83 @@ public class OrderService {
 
     }
 
-    public Optional<LineItem> addLineItem(UUID itemId) {
-
-        // Validate order, check status,
+    public SimpleResponse addItemToOrder(UUID itemId) {
 
         Optional<Order> orderOptional = getCurrentOrder();
         if (orderOptional.isEmpty()) {
-            return Optional.empty();
+            return new SimpleResponse(false, "Cannot find order");
         }
         Order order = orderOptional.get();
 
+        if (!order.isEditable()) {
+            return new SimpleResponse(false, "Order is not editable");
+        }
+
         Optional<Item> itemOpt = itemService.findById(itemId);
         if (itemOpt.isEmpty()) {
-            return Optional.empty();
+            return new SimpleResponse(false, "No item found");
         }
 
         // Search item in order line
-        List<LineItem> found = order.getLineItems()
+        List<OrderLine> found = order.getOrderLines()
                 .stream()
                 .filter(i -> i.getItem().getId().equals(itemId))
                 .toList();
 
-        LineItem lineItem;
+        OrderLine orderLine;
 
         if (found.size() > 0) {
             // Increase order line qty
-            lineItem = found.get(0);
-            lineItem.increaseQuantity();
+            orderLine = found.get(0);
+            orderLine.increaseQuantity();
         } else {
             // create new line item
-             lineItem = new LineItem(itemOpt.get());
-            order.addLineItem(lineItem);
+             orderLine = new OrderLine(itemOpt.get());
+            order.addLineItem(orderLine);
         }
         orderRepository.save(order);
-        return Optional.of(lineItem);
+        return new SimpleResponse(true, "Successfully added item to order", orderLine);
     }
 
-    public void removeLineItem(UUID orderId, UUID lineId) {
-        Optional<Order> orderOpt = orderRepository.findById(orderId);
-        if (orderOpt.isPresent()) {
-            Order order = orderOpt.get();
-            order.removeLineItem(lineId);
-            orderRepository.save(order);
+    public SimpleResponse removeItemFromOrder(UUID itemId) {
+
+        Optional<Order> orderOptional = getCurrentOrder();
+        if (orderOptional.isEmpty()) {
+            return new SimpleResponse(false, "Couldn't find order");
         }
+        Order order = orderOptional.get();
+
+        if (!order.isEditable()) {
+            return new SimpleResponse(false, "Couldn't update order");
+        }
+
+        Optional<Item> itemOpt = itemService.findById(itemId);
+        if (itemOpt.isEmpty()) {
+            return new SimpleResponse(false, "No item found");
+        }
+
+        // Search item in order line
+        List<OrderLine> found = order.getOrderLines()
+                .stream()
+                .filter(i -> i.getItem().getId().equals(itemId))
+                .toList();
+
+        if (found.size() == 0) {
+            return new SimpleResponse(false, "No item found");
+        }
+
+        OrderLine orderLine = found.get(0);
+
+        if (orderLine.getQuantity() > 1) {
+            // decrease order line qty
+            orderLine.decreaseQuantity();
+        } else {
+            // Remove from order
+            order.removeLineItem(orderLine);
+        }
+
+        orderRepository.save(order);
+        return new SimpleResponse(true, "Successfully removed from order");
     }
 
     public void checkoutOrder(UUID uuid) {

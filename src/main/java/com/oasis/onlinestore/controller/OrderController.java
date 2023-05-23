@@ -1,13 +1,12 @@
 package com.oasis.onlinestore.controller;
 
-import com.oasis.onlinestore.domain.Item;
-import com.oasis.onlinestore.domain.LineItem;
+import com.oasis.onlinestore.domain.OrderLine;
 import com.oasis.onlinestore.domain.Order;
-import com.oasis.onlinestore.domain.Status;
+import com.oasis.onlinestore.domain.OrderRequestBody;
+import com.oasis.onlinestore.contract.SimpleResponse;
 import com.oasis.onlinestore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,35 +35,29 @@ public class OrderController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/{orderId}/line")
+    @GetMapping("/{orderId}/lines")
     public ResponseEntity<?> getAllItemLine(@PathVariable String orderId) {
         UUID uuid = UUID.fromString(orderId);
         Optional<Order> order = orderService.getOrderById(uuid);
         if (order.isPresent()) {
-            List<LineItem> lineItems = order.get().getLineItems();
-            return new ResponseEntity<List<LineItem>>(lineItems, HttpStatus.OK);
+            List<OrderLine> orderLines = order.get().getOrderLines();
+            return new ResponseEntity<List<OrderLine>>(orderLines, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/additem")
-    public ResponseEntity<?> addItemLineToOrder(@RequestParam("itemId") String itemId) {
-        UUID itemUuid = UUID.fromString(itemId);
-        Optional<LineItem> lineItemOptional = orderService.addLineItem(itemUuid);
-
-        if (lineItemOptional.isPresent()) {
-            return new ResponseEntity<LineItem>(lineItemOptional.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    public ResponseEntity<SimpleResponse> addItemLineToOrder(@RequestBody OrderRequestBody body) {
+        UUID itemUuid = UUID.fromString(body.getItemId());
+        SimpleResponse res = orderService.addItemToOrder(itemUuid);
+        return new ResponseEntity<SimpleResponse>(res, HttpStatus.OK);
     }
 
-    @DeleteMapping("/line/{itemLineId}")
-    public ResponseEntity<?> removeItemLineFromOrder(@PathVariable String orderId,
-                                                     @PathVariable String itemLineId) {
-        UUID uuid = UUID.fromString(orderId);
-        UUID itemLineUUID = UUID.fromString(orderId);
-        orderService.removeLineItem(uuid, itemLineUUID);
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    @PostMapping("/removeitem")
+    public ResponseEntity<SimpleResponse> removeItemLineFromOrder(@RequestBody OrderRequestBody body) {
+        UUID itemUuid = UUID.fromString(body.getItemId());
+        SimpleResponse res = orderService.removeItemFromOrder(itemUuid);
+        return new ResponseEntity<SimpleResponse>(res, HttpStatus.OK);
     }
 
     @PostMapping("/checkout")

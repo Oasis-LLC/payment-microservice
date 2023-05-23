@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class LineItem {
+public class OrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -18,10 +18,10 @@ public class LineItem {
     @JoinColumn(name = "itemId")
     private Item item;
 
-    public LineItem() {
+    public OrderLine() {
     }
 
-    public LineItem(Item item) {
+    public OrderLine(Item item) {
         this.item = item;
         this.quantity = 1;
     }
