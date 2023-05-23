@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Data
-public class Customer {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,23 +21,26 @@ public class Customer {
 
     private String email;
 
-    public Customer(){}
+    public User(){}
 
-    public Customer(String firstName, String lastName, String email) {
+    public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "customerId")
     private List<CreditCard> creditCards = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "orderId")
     private List<Order> orders = new ArrayList<>();
+
+    @Enumerated
+    private Role role;
 }

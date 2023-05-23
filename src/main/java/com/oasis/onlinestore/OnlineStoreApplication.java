@@ -2,6 +2,7 @@ package com.oasis.onlinestore;
 
 import com.oasis.onlinestore.domain.*;
 import com.oasis.onlinestore.repository.OrderRepository;
+import com.oasis.onlinestore.repository.UserRepository;
 import com.oasis.onlinestore.service.ItemService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
 public class OnlineStoreApplication implements CommandLineRunner {
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	OrderRepository orderRepo;
@@ -37,17 +38,19 @@ public class OnlineStoreApplication implements CommandLineRunner {
 
 		o1.setStatus(Status.SHIPPED);
 		Address testAddress = new Address("123 Main St", "City", "State", AddressType.SHIPPING  );
-//		Customer cust = new Customer("John", "Bob", "johnBob@gmail.com");
+		User cust = new User("John", "Bob", "johnBob@gmail.com");
+		userRepository.save(cust);
 		o1.setShippingAddress(testAddress);
-//		cust.setOrders(orders);
+		cust.setOrders(orders);
 		orderRepo.save(o1);
 
 
+
 		List<Order> foundOrders = orderRepo.findByShippingAddress(testAddress);
-//		List<Order> findCustomer = orderRepo.findByCustomer(cust);
+		List<Order> findCustomer = orderRepo.findByCustomer(cust);
 
 
-		for (Order order:foundOrders) {
+		for (Order order:findCustomer) {
 			System.out.println(order);
 
 		}

@@ -1,9 +1,7 @@
 package com.oasis.onlinestore.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customer customer;
+    private User customer;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "addressId")
