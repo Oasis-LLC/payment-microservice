@@ -1,8 +1,9 @@
 package com.oasis.onlinestore.service;
 
-import com.oasis.onlinestore.domain.LineItem;
-import com.oasis.onlinestore.domain.Order;
+import com.oasis.onlinestore.domain.*;
 import com.oasis.onlinestore.repository.OrderRepository;
+import com.oasis.onlinestore.repository.UserRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,12 @@ import java.util.UUID;
 public class OrderService {
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ItemService itemService;
 
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
@@ -29,15 +36,39 @@ public class OrderService {
 
     }
 
-    public Optional<LineItem> addLineItem(UUID orderId, LineItem itemLine) {
+    public Optional<LineItem> addLineItem(UUID orderId, UUID itemId) {
+
+        // Validate order, check status,
         Optional<Order> orderOpt = orderRepository.findById(orderId);
-        if (orderOpt.isPresent()) {
-            Order order = orderOpt.get();
-            order.addLineItem(itemLine);
-            orderRepository.save(order);
-            return Optional.of(itemLine);
+        if (orderOpt.isEmpty()) {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        Order order = orderOpt.get();
+        Optional<Item> itemOpt = itemService.findById(itemId);
+        if (itemOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // Search item in order line
+        List<LineItem> found = order.getLineItems()
+                .stream()
+                .filter(i -> i.getItem().getId().equals(itemId))
+                .toList();
+
+        LineItem lineItem;
+
+        if (found.size() > 0) {
+            // Increase order line qty
+            lineItem = found.get(0);
+            lineItem.increaseQuantity();
+        } else {
+            // create new line item
+             lineItem = new LineItem(itemOpt.get());
+            order.addLineItem(lineItem);
+        }
+        orderRepository.save(order);
+        return Optional.of(lineItem);
     }
 
     public void removeLineItem(UUID orderId, UUID lineId) {
@@ -60,6 +91,28 @@ public class OrderService {
         // Do checkout here
         // 1. change order state
         // 2. save order
+    }
+
+    // Helper methods
+
+
+    private User getCurrentCustomer() {
+        // Get user based on JWT token
+        // Testing
+        return new User();
+    }
+
+    private Order getCurrentOrder() {
+        // return new existing order or create new order
+        User customer = getCurrentCustomer();
+        Order newOrder = customer.getCurrentOrder();
+        if (newOrder == null) {
+            newOrder = new Order(customer, Status.NEW);
+            customer.addOrder(newOrder);
+            // save to userRepository
+            userRepository.save(customer);
+        }
+        return newOrder;
     }
 
 }

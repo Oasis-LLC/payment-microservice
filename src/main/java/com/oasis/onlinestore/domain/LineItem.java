@@ -18,10 +18,17 @@ public class LineItem {
     @JoinColumn(name = "itemId")
     private Item item;
 
-    public LineItem(){
-
+    public LineItem(Item item) {
+        this.item = item;
+        this.quantity = 1;
     }
 
+    public void increaseQuantity() {
+        quantity++;
+    }
 
+    public void decreaseQuantity() {
+        quantity--;
+    }
 
 }

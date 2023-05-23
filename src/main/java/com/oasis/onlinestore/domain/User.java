@@ -43,4 +43,23 @@ public class User {
 
     @Enumerated
     private Role role;
+
+    public Order getCurrentOrder() {
+        List<Order> newList = orders.stream().filter(x-> x.getStatus() == Status.NEW).toList();
+        if (newList.size() > 0) {
+            return newList.get(0);
+        }
+        return null;
+    }
+
+    public void addOrder(Order order) {
+        this.orders.add(order);
+    }
+
+    public User(String firstName, String lastName, String email, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+    }
 }

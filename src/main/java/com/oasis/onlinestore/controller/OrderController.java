@@ -1,5 +1,6 @@
 package com.oasis.onlinestore.controller;
 
+import com.oasis.onlinestore.domain.Item;
 import com.oasis.onlinestore.domain.LineItem;
 import com.oasis.onlinestore.domain.Order;
 import com.oasis.onlinestore.service.OrderService;
@@ -45,16 +46,20 @@ public class OrderController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{orderId}/line")
-    public ResponseEntity<?> addItemLineToOrder(@PathVariable String orderId, LineItem lineItem) {
+    @PostMapping("/{orderId}/addItem")
+    public ResponseEntity<?> addItemLineToOrder(@PathVariable String orderId,
+                                                @RequestParam("itemId") String itemId) {
         UUID uuid = UUID.fromString(orderId);
-        Optional<LineItem> lineItemOptional = orderService.addLineItem(uuid, lineItem);
+        UUID itemUuid = UUID.fromString(itemId);
+        Optional<LineItem> lineItemOptional = orderService.addLineItem(uuid, itemUuid);
 
         if (lineItemOptional.isPresent()) {
             return new ResponseEntity<LineItem>(lineItemOptional.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("/{orderId}/")
 
     @DeleteMapping("/{orderId}/line/{itemLineId}")
     public ResponseEntity<?> removeItemLineFromOrder(@PathVariable String orderId,

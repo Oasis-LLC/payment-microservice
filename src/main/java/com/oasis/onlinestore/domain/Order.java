@@ -38,4 +38,12 @@ public class Order {
     public void removeLineItem(UUID uuid) {
         lineItems = lineItems.stream().filter(x -> !x.getId().equals(uuid)).toList();
     }
+
+    public Order() {
+    }
+
+    public Order(User customer, Status status) {
+        this.customer = customer;
+        this.status = status;
+    }
 }

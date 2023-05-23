@@ -54,8 +54,13 @@ public class OnlineStoreApplication implements CommandLineRunner {
 			System.out.println(order);
 
 		}
-
+		testUserService();
 		testItemService();
+	}
+
+	private void testUserService() {
+		User user = new User("Test", "User", "test@gmail.com", Role.CUSTOMER);
+		userRepository.save(user);
 	}
 
 	private void testItemService() {
