@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "UserEntity")
 @Data
 public class User {
 
@@ -37,7 +37,7 @@ public class User {
     @JoinColumn(name = "customerId")
     private List<CreditCard> creditCards = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "orderId")
     private List<Order> orders = new ArrayList<>();
 
