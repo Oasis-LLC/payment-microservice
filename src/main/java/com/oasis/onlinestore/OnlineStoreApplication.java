@@ -19,6 +19,7 @@ public class OnlineStoreApplication implements CommandLineRunner {
 
 	@Autowired
 	OrderRepository orderRepo;
+	@Autowired
 	ItemService itemService;
 
 	public static void main(String[] args) {
