@@ -2,12 +2,12 @@ package com.oasis.onlinestore.service;
 
 import com.oasis.onlinestore.domain.LineItem;
 import com.oasis.onlinestore.repository.LineItemRepo;
-import com.oasis.onlinestore.repository.OrderRepo;
 import jakarta.persistence.criteria.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 
@@ -20,7 +20,7 @@ public class LineItemService {
         return lineItemRepository.save(lineItem);
     }
 
-    public LineItem getLineItemById(Integer id) {
+    public LineItem getLineItemById(UUID id) {
         //  get a LineItem by id
         return lineItemRepository.findById(id).orElse(null);
     }
@@ -30,7 +30,7 @@ public class LineItemService {
         return lineItemRepository.save(lineItem);
     }
 
-    public void deleteLineItem(Integer id) {
+    public void deleteLineItem(UUID id) {
         //  delete a LineItem by id
         lineItemRepository.deleteById(id);
     }
@@ -39,9 +39,9 @@ public class LineItemService {
         return lineItemRepository.findAll();
     }
 
-    public List<LineItem> getLineItemsByOrderId(Long orderId) {
-        //retrieve all LineItems associated with a specific order from the database
-        return lineItemRepository.findByOrderId(orderId);
-    }
+//    public List<LineItem> getLineItemsByOrderId(Long orderId) {
+//        //retrieve all LineItems associated with a specific order from the database
+//        return lineItemRepository.findByOrderId(orderId);
+//    }
 
 }

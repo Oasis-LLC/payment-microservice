@@ -20,10 +20,12 @@ import java.util.UUID;
 public class OrderController {
     @Autowired
     OrderService orderService;
+
     @GetMapping
     public List<Order> findAll(){
         return orderService.getAllOrders();
     }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<?> findAllById(@PathVariable String orderId){
         UUID uuid = UUID.fromString(orderId);
