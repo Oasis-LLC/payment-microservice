@@ -46,12 +46,10 @@ public class OrderController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{orderId}/addItem")
-    public ResponseEntity<?> addItemLineToOrder(@PathVariable String orderId,
-                                                @RequestParam("itemId") String itemId) {
-        UUID uuid = UUID.fromString(orderId);
+    @PostMapping("/additem")
+    public ResponseEntity<?> addItemLineToOrder(@RequestParam("itemId") String itemId) {
         UUID itemUuid = UUID.fromString(itemId);
-        Optional<LineItem> lineItemOptional = orderService.addLineItem(uuid, itemUuid);
+        Optional<LineItem> lineItemOptional = orderService.addLineItem(itemUuid);
 
         if (lineItemOptional.isPresent()) {
             return new ResponseEntity<LineItem>(lineItemOptional.get(), HttpStatus.OK);
@@ -59,9 +57,7 @@ public class OrderController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{orderId}/")
-
-    @DeleteMapping("/{orderId}/line/{itemLineId}")
+    @DeleteMapping("/line/{itemLineId}")
     public ResponseEntity<?> removeItemLineFromOrder(@PathVariable String orderId,
                                                      @PathVariable String itemLineId) {
         UUID uuid = UUID.fromString(orderId);
@@ -70,9 +66,10 @@ public class OrderController {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{orderId}/line/checkout")
+    @PostMapping("/checkout")
     public ResponseEntity<?> checkoutOrder(@PathVariable String orderId) {
-
+        UUID uuid = UUID.fromString(orderId);
+        orderService.checkoutOrder(uuid);
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 

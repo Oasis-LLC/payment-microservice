@@ -30,6 +30,11 @@ public class OnlineStoreApplication implements CommandLineRunner {
 	@Transactional
 	@Override
 	public void run(String... args) throws Exception {
+
+//		testUserService();
+	}
+
+	private void testUser() {
 		Order o1 = new Order();
 		Order o2 = new Order();
 		List<Order> orders = new ArrayList<>();
@@ -54,8 +59,6 @@ public class OnlineStoreApplication implements CommandLineRunner {
 			System.out.println(order);
 
 		}
-		testUserService();
-		testItemService();
 	}
 
 	private void testUserService() {

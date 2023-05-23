@@ -20,6 +20,8 @@ public class OrderService {
     @Autowired
     UserRepository userRepository;
 
+
+
     @Autowired
     ItemService itemService;
 
@@ -36,15 +38,16 @@ public class OrderService {
 
     }
 
-    public Optional<LineItem> addLineItem(UUID orderId, UUID itemId) {
+    public Optional<LineItem> addLineItem(UUID itemId) {
 
         // Validate order, check status,
-        Optional<Order> orderOpt = orderRepository.findById(orderId);
-        if (orderOpt.isEmpty()) {
+
+        Optional<Order> orderOptional = getCurrentOrder();
+        if (orderOptional.isEmpty()) {
             return Optional.empty();
         }
+        Order order = orderOptional.get();
 
-        Order order = orderOpt.get();
         Optional<Item> itemOpt = itemService.findById(itemId);
         if (itemOpt.isEmpty()) {
             return Optional.empty();
@@ -99,12 +102,16 @@ public class OrderService {
     private User getCurrentCustomer() {
         // Get user based on JWT token
         // Testing
-        return new User();
+        return userRepository.findByEmail("test@gmail.com");
     }
 
-    private Order getCurrentOrder() {
+    private Optional<Order> getCurrentOrder() {
         // return new existing order or create new order
         User customer = getCurrentCustomer();
+        if (customer == null) {
+            return Optional.empty();
+        }
+
         Order newOrder = customer.getCurrentOrder();
         if (newOrder == null) {
             newOrder = new Order(customer, Status.NEW);
@@ -112,7 +119,7 @@ public class OrderService {
             // save to userRepository
             userRepository.save(customer);
         }
-        return newOrder;
+        return Optional.of(newOrder);
     }
 
 }

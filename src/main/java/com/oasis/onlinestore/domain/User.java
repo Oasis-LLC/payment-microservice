@@ -37,8 +37,7 @@ public class User {
     @JoinColumn(name = "customerId")
     private List<CreditCard> creditCards = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "orderId")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     @Enumerated
