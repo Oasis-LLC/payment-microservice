@@ -1,15 +1,13 @@
 package com.oasis.onlinestore.controller;
 
+import com.oasis.onlinestore.domain.LineItem;
 import com.oasis.onlinestore.domain.Order;
 import com.oasis.onlinestore.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,4 +33,42 @@ public class OrderController {
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/{orderId}/line")
+    public ResponseEntity<?> getAllItemLine(@PathVariable String orderId) {
+        UUID uuid = UUID.fromString(orderId);
+        Optional<Order> order = orderService.getOrderById(uuid);
+        if (order.isPresent()) {
+            List<LineItem> lineItems = order.get().getLineItems();
+            return new ResponseEntity<List<LineItem>>(lineItems, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/{orderId}/line")
+    public ResponseEntity<?> addItemLineToOrder(@PathVariable String orderId, LineItem lineItem) {
+        UUID uuid = UUID.fromString(orderId);
+        Optional<LineItem> lineItemOptional = orderService.addLineItem(uuid, lineItem);
+
+        if (lineItemOptional.isPresent()) {
+            return new ResponseEntity<LineItem>(lineItemOptional.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/{orderId}/line/{itemLineId}")
+    public ResponseEntity<?> removeItemLineFromOrder(@PathVariable String orderId,
+                                                     @PathVariable String itemLineId) {
+        UUID uuid = UUID.fromString(orderId);
+        UUID itemLineUUID = UUID.fromString(orderId);
+        orderService.removeLineItem(uuid, itemLineUUID);
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/{orderId}/line/checkout")
+    public ResponseEntity<?> checkoutOrder(@PathVariable String orderId) {
+
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
 }

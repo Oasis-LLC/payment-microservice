@@ -31,4 +31,11 @@ public class Order {
         return status == Status.PLACED;
     }
 
+    public void addLineItem(LineItem lineItem) {
+        this.lineItems.add(lineItem);
+    }
+
+    public void removeLineItem(UUID uuid) {
+        lineItems = lineItems.stream().filter(x -> !x.getId().equals(uuid)).toList();
+    }
 }
