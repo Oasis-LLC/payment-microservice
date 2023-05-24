@@ -1,2 +1,2 @@
-# oasis-store
-E-commerce Store API 
+# Payment Microservice
+Payment Microservice for Oasis E-commerce Store API 

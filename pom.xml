@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.oasis</groupId>
-	<artifactId>online-store</artifactId>
+	<artifactId>payment-microservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>online-store</name>
-	<description>E-Commerce Store API</description>
+	<name>payment-microservice</name>
+	<description>Payment Microservice for E-Commerce Store</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -48,19 +48,6 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>3.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

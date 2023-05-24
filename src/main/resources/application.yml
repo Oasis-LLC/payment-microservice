@@ -1,19 +1,16 @@
-secret: jwtSecretKey
 spring:
-  security:
-    user:
-      username: admin
-      password: password
-
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: password
+    password: 1234
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 9000
