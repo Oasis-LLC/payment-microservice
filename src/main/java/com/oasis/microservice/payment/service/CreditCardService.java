@@ -24,6 +24,14 @@ public class CreditCardService {
         return creditCardRepository.findById(id);
     }
 
+    public List<CreditCard> getCreditCardsByUserId(String userId) {
+        return creditCardRepository.findByUserId(userId);
+    }
+
+    public void deleteCreditCardById(UUID id) {
+        creditCardRepository.deleteById(id);
+    }
+
     public Page<CreditCard> findAll(Pageable pageable) {
         return creditCardRepository.findAll(pageable);
     }
@@ -32,8 +40,8 @@ public class CreditCardService {
         return creditCardRepository.findById(id);
     }
 
-    public CreditCard save(CreditCard Payment) {
-        return creditCardRepository.save(Payment);
+    public CreditCard save(CreditCard card) {
+        return creditCardRepository.save(card);
     }
 
     public void deleteById(UUID id) {
