@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,7 +19,7 @@ public class ReviewService {
     }
 
     public List<Review>getReviewsByItem(String itemName) {
-        return reviewRepo.findByItemName(itemName);
+        return reviewRepo.findByTitle(itemName);
     }
 
 

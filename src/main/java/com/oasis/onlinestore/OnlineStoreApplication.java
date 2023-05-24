@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,14 +73,16 @@ public class OnlineStoreApplication implements CommandLineRunner {
 				"Baby Swing for Infants, Electric Portable Baby Swing for Newborn, Bluetooth Touch Screen/Remote Control Timi",
 				"image",
 				"183837478",
-				12
+				12,
+				20
 		);
 		Item item2 = new Item(
 				"Alienware Ultrawide Curved Gaming Monitor 38 Inch",
 				"144Hz Refresh Rate, 3840 x 1600 WQHD , IPS, NVIDIA G-SYNC Ultimate, 1ms Response Time, 2300R Curvature, VESA Display HDR 600, AW3821DW - White",
 				"someimage",
 				"183837478",
-				2
+				2,
+				200
 		);
 		itemService.save(item1);
 		itemService.save(item2);
