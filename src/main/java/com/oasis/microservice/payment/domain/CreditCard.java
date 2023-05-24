@@ -13,6 +13,7 @@ public class CreditCard {
     private UUID id;
     @Column(unique = true)
     private String cardNumber;
+    @Column(name = "expDate")
     private int expirationDate;
     private String nameOnCard;
     private int securityCode;

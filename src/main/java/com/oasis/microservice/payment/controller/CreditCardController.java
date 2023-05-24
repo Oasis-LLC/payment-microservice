@@ -41,9 +41,8 @@ public class CreditCardController {
 
     @PostMapping("/add")
     public ResponseEntity<?> addCard(@RequestBody CreditCard card) {
-        return new ResponseEntity<CreditCardResponse>(
-                mapper.map(creditCardService.save(card), CreditCardResponse.class),
-                HttpStatus.CREATED);
+        CreditCard save = creditCardService.save(card);
+        return new ResponseEntity<CreditCard>(save, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{cardId}")
@@ -66,11 +65,6 @@ public class CreditCardController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserCreditCards(@PathVariable String userId) {
         List<CreditCard> cards = creditCardService.getCreditCardsByUserId(userId);
-
-        if (cards.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
