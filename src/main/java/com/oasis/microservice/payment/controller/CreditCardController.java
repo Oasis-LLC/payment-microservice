@@ -59,7 +59,7 @@ public class CreditCardController {
             return new ResponseEntity<>(creditCardService.save(_card), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(cardData.get(), HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/user/{userId}")
