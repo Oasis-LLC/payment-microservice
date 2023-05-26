@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: postgres://oasisdb_user:DBu9sgheGKC5sIGJ94k1ZHfDXRRWypvd@dpg-chnumhhmbg50piv54om0-a.oregon-postgres.render.com/oasisdb
+    url: jdbc:postgres://oasisdb_user:DBu9sgheGKC5sIGJ94k1ZHfDXRRWypvd@dpg-chnumhhmbg50piv54om0-a.oregon-postgres.render.com/oasisdb
     username: oasisdb_user
     password: DBu9sgheGKC5sIGJ94k1ZHfDXRRWypvd
   jpa:
